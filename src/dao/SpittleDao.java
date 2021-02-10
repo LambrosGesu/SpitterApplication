@@ -1,15 +1,14 @@
 package dao;
 
-import domain.Spitter;
 import domain.Spittle;
 
 import java.sql.*;
 
 public class SpittleDao {
     private Connection conn = null;
-    private String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
-    private String username = "user1";
-    private String password = "password";
+    private final String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
+    private final String username = "user1";
+    private final String password = "password";
 
     public void openConnection() throws Exception{
         try{
@@ -27,13 +26,15 @@ public class SpittleDao {
                 conn.close();
             }
         }catch (Exception e){
-            System.out.println("----- close connection failed -----");
+            if(conn == null) {
+                System.out.println("----- close connection failed -----");
+            }
         }
     }
 
     public void createSpittle(Spittle spittle) throws Exception {
         try{
-            PreparedStatement stmt = conn.prepareStatement(" INSERT INTO SPITTERS VALUES(?, ?, ?)");
+            PreparedStatement stmt = conn.prepareStatement(" INSERT INTO SPITTLES VALUES(?, ?, ?)");
             stmt.setLong(1, spittle.getId());
             stmt.setString(2, spittle.getMessage());
             stmt.setString(3, spittle.getDate());
@@ -53,9 +54,8 @@ public class SpittleDao {
             stmt.setString(2, date);
             stmt.executeUpdate();
         }catch (Exception e) {
-            if (conn == null) {
-                conn.rollback();
-            }
+            e.printStackTrace();
+            conn.rollback();
         }
     }
 
@@ -67,9 +67,8 @@ public class SpittleDao {
             stmt.setString(1, id);
             stmt.executeUpdate();
         }catch (Exception e) {
-            if (conn == null) {
-                conn.rollback();
-            }
+            e.printStackTrace();
+            conn.rollback();
         }
     }
 
@@ -82,7 +81,7 @@ public class SpittleDao {
                 System.out.println(rs.getString("message"));
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

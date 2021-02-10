@@ -6,14 +6,16 @@ import java.sql.*;
 
 public class SpitterDao {
     private Connection conn = null;
-    private String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
-    private String username = "user1";
-    private String password = "password";
 
     public void openConnection() throws Exception{
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
+            String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
+            String username = "user1";
+            String password = "password";
             conn = DriverManager.getConnection(connectionUrl, username, password);
+            conn.setAutoCommit(false);
+            System.out.println("Connection opened!");
         }catch (Exception e){
             System.out.println("connection failed!");
         }
@@ -21,12 +23,13 @@ public class SpitterDao {
 
     public void closeConnection() throws Exception{
         try{
-            if(conn !=null){
-                conn.commit();
-                conn.close();
+            conn.commit();
+            conn.close();
+            if(conn.isClosed()) {
+                System.out.println("Connection closed!");
             }
         }catch (Exception e){
-            System.out.println("----- close connection failed -----");
+            e.printStackTrace();
         }
     }
 
@@ -58,7 +61,8 @@ public class SpitterDao {
             stmt.executeUpdate();
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            conn.rollback();
         }
     }
 
@@ -69,6 +73,7 @@ public class SpitterDao {
             stmt.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
+            conn.rollback();
         }
     }
 

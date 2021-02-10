@@ -14,8 +14,9 @@ public class SpittrApplication {
         d1.createSpitter(s1);
         d1.createSpitter(s2);
         d1.createSpitter(s3);
+        d1.readSpitters();
         d1.createSpitter(s4);
-        d1.updateSpitter(s2,"Giannis", "Ioannou");
+        d1.updateSpitter(s2,"Vasilis", "Ioannou");
         d1.deleteSpitter("3");
         d1.readSpitters();
         d1.closeConnection();
