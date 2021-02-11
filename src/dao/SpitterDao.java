@@ -1,91 +1,120 @@
 package dao;
 
 import domain.Spitter;
+import domain.Spittle;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.jboss.logging.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static hibernate.HibernateUtil.getSessionFactory;
 
 public class SpitterDao {
-    private Connection conn = null;
-
-    public void openConnection() throws Exception{
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
-            String username = "user1";
-            String password = "password";
-            conn = DriverManager.getConnection(connectionUrl, username, password);
-            conn.setAutoCommit(false);
-            System.out.println("Connection opened!");
-        }catch (Exception e){
-            System.out.println("connection failed!");
-        }
-    }
-
-    public void closeConnection() throws Exception{
-        try{
-            conn.commit();
-            conn.close();
-            if(conn.isClosed()) {
-                System.out.println("Connection closed!");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+    static Session session;
+    static SessionFactory sessionFactoryObj;
+    public final static Logger logger = Logger.getLogger(SpitterDao.class);
 
     public void createSpitter(Spitter spitter) throws Exception{
         try{
-            PreparedStatement stmt = conn.prepareStatement(" INSERT INTO SPITTERS VALUES(?, ?, ?, ?, ?)");
-            stmt.setLong(1, spitter.getId());
-            stmt.setString(2, spitter.getFirstname());
-            stmt.setString(3, spitter.getLastname());
-            stmt.setString(4, spitter.getUsername());
-            stmt.setString(5, spitter.getPassword());
-            int rs = stmt.executeUpdate();
-            if(rs != 0){
-                System.out.println("Spitter created!");
-            }
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(spitter);
+            logger.info("\nSpitter with Name = " + spitter.getFirstname()+ " " + spitter.getLastname()+ " Created");
         }catch (Exception e){
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
             e.printStackTrace();
+        }finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
-    public void updateSpitter(Spitter spitter, String firstname, String lastname) throws Exception {
+    public static List displaySpitters() {
+        List spittersList = new ArrayList();
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            logger.info("\nAll Spitters\n");
+            spittersList = session.createQuery("FROM Spitter").list();
+        } catch(Exception e) {
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+        return spittersList;
+    }
+
+    public void updateSpitter(Long id) throws Exception {
         try{
-            PreparedStatement stmt = conn.prepareStatement("UPDATE SPITTERS SET firstname=?, lastname = ?, username=?, password = ? WHERE id=?");
-            stmt.setLong(5, spitter.getId());
-            stmt.setString(1, firstname);
-            stmt.setString(2, lastname);
-            stmt.setString(3, spitter.getUsername());
-            stmt.setString(4, spitter.getPassword());
-            stmt.executeUpdate();
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            Spitter spitter = (Spitter) session.get(Spitter.class, id);
+            spitter.setFirstname("Theodore");
+            spitter.setLastname("Stroh");
+            session.getTransaction().commit();
+            logger.info("\nSpitter with Id = " + id + " Updated");
         }
         catch (Exception e){
-            e.printStackTrace();
-            conn.rollback();
-        }
-    }
-
-    public void deleteSpitter(String id) throws Exception {
-        try {
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM SPITTERS WHERE id=?");
-            stmt.setString(1,id);
-            stmt.executeUpdate();
-        }catch (Exception e){
-            e.printStackTrace();
-            conn.rollback();
-        }
-    }
-
-    public void readSpitters() throws Exception {
-        try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM SPITTERS");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getString("firstname"));
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
             }
+            e.printStackTrace();
+        }finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public void deleteSpitter(Long id) throws Exception {
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            Spitter spitter = findSpitterById(id);
+            session.delete(spitter);
+            session.getTransaction().commit();
+            logger.info("\nSpitter with Id = " + id + " Deleted");
         }catch (Exception e){
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static Spitter findSpitterById(Long id){
+        Spitter findSpitter = null;
+        try{
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            findSpitter = (Spitter) session.load(Spitter.class, id);
+
+        }catch (Exception e){
+            if(session.getTransaction() !=null){
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
             e.printStackTrace();
         }
+        return findSpitter;
     }
 }

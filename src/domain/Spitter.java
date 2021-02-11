@@ -1,23 +1,38 @@
 package domain;
 
 
+import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "SPITTERS")
 public class Spitter {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "spitter_id", nullable = false)
     private Long id;
+
+    @Column(name = "firstname", nullable = false)
     private String firstname;
+
+    @Column(name = "lastname", nullable = false)
     private String lastname;
+
+    @Column(name = "username", nullable = false)
     private String username;
+
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "spitter", targetEntity = Spittle.class, cascade = {CascadeType.REMOVE})
     private List<Spittle> spittles = new ArrayList<Spittle>();
 
     public Spitter() {
     }
 
-    public Spitter(Long id, String firstname, String lastname, String username, String password) {
-        this.id = id;
+    public Spitter(String firstname, String lastname, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;

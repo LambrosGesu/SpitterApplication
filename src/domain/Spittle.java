@@ -1,16 +1,32 @@
 package domain;
-import java.util.List;
+import javax.persistence.*;
 
+
+@Entity
+@Table(name = "SPITTLES")
 public class Spittle {
-    private Long id;
-    private String message;
-    private String date;
-    private List<Spittle> spittles;
 
-    public Spittle(Long id, String message, String date) {
-        this.id = id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "spittle_id", nullable = false)
+    private Long id;
+
+    @Column(name = "message", nullable = false)
+    private String message;
+
+    @Column(name = "date", nullable = false)
+    private String date;
+
+    @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "spitter_id", nullable = true)
+    private Spitter spitter;
+
+    public Spittle() {
+    }
+
+    public Spittle(String message, String date, Spitter spitter) {
         this.message = message;
         this.date = date;
+        this.spitter = spitter;
     }
 
     public Long getId() {
@@ -33,11 +49,21 @@ public class Spittle {
         this.date = date;
     }
 
+    public Spitter getSpitter() {
+        return spitter;
+    }
+
+    public void setSpitter(Spitter spitter) {
+        this.spitter = spitter;
+    }
+
     @Override
     public String toString() {
-        return "Spittles{" +
-                "message='" + message + '\'' +
-                ", date=" + date +
-                '}'+'\n';
+        return "Spittle{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", date='" + date + '\'' +
+                ", spitter=" + spitter.getFirstname() + ", " + spitter.getLastname() +
+                '}';
     }
 }
