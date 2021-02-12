@@ -1,89 +1,115 @@
 package dao;
 
+import domain.Spitter;
 import domain.Spittle;
+import hibernate.HibernateUtil;
+import org.hibernate.Session;
+import org.jboss.logging.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpittleDao {
-    private Connection conn = null;
-    private final String connectionUrl = "jdbc:mysql://localhost:3306/mytrainingDb";
-    private final String username = "user1";
-    private final String password = "password";
+    static Session session;
+    public final static Logger logger = Logger.getLogger(SpitterDao.class);
 
-    public void openConnection() throws Exception{
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionUrl, username, password);
-        }catch (Exception e){
-            System.out.println("connection failed!");
-        }
-    }
-
-    public void closeConnection() throws Exception{
-        try{
-            if(conn !=null){
-                conn.commit();
-                conn.close();
-            }
-        }catch (Exception e){
-            if(conn == null) {
-                System.out.println("----- close connection failed -----");
-            }
-        }
-    }
 
     public void createSpittle(Spittle spittle) throws Exception {
         try{
-            PreparedStatement stmt = conn.prepareStatement(" INSERT INTO SPITTLES VALUES(?, ?, ?)");
-            stmt.setLong(1, spittle.getId());
-            stmt.setString(2, spittle.getMessage());
-            stmt.setString(3, spittle.getDate());
-            int rs = stmt.executeUpdate();
-        }catch(Exception e){
-            if (conn == null) {
-                conn.rollback();
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(spittle);
+            logger.info("\nSpitter Created");
+        }catch (Exception e){
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            if (session != null) {
+                session.close();
             }
         }
     }
 
-    public void updateSpittle(Spittle spittle,  String message, String date) throws Exception {
-        try{
-            PreparedStatement stmt = conn.prepareStatement("UPDATE SPITTLES SET message=?, date = ? WHERE id=?");
-            stmt.setLong(3, spittle.getId());
-            stmt.setString(1, message);
-            stmt.setString(2, date);
-            stmt.executeUpdate();
-        }catch (Exception e) {
-            e.printStackTrace();
-            conn.rollback();
-        }
-    }
-
-    public void deleteSpittle(String id) throws Exception {
-        try{
-            conn = DriverManager.getConnection(connectionUrl,username,password);
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM SPITTLES WHERE id=?");
-
-            stmt.setString(1, id);
-            stmt.executeUpdate();
-        }catch (Exception e) {
-            e.printStackTrace();
-            conn.rollback();
-        }
-    }
-
-    public void readSpittles() throws Exception {
+    public static List displaySpitters() {
+        List spittlesList = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection(connectionUrl, username, password);
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM SPITTLES");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getString("message"));
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            logger.info("\nAll Spittles\n");
+            spittlesList = session.createQuery("FROM Spittle").list();
+        } catch(Exception e) {
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
             }
-        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+        return spittlesList;
+    }
+
+    public void updateSpittle(Long id) throws Exception {
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Spittle spittle = (Spittle) session.get(Spittle.class, id);
+            spittle.setMessage("A new updated message");
+            session.getTransaction().commit();
+            logger.info("\nSpittle Updated");
+        }catch (Exception e) {
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            if(session != null) {
+                session.close();
+            }
         }
     }
 
+    public void deleteSpittle(Long id) throws Exception {
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Spittle spittle = findSpittleById(id);
+            session.delete(spittle);
+            session.getTransaction().commit();
+            logger.info("\nSpittle with Id = " + id + " Deleted");
+        }catch (Exception e){
+            if(null != session.getTransaction()) {
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            if(session != null) {
+                session.close();
+            }
+        }
+    }
 
+    public static Spittle findSpittleById(Long id){
+        Spittle findSpittle = null;
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            findSpittle = (Spittle) session.load(Spittle.class, id);
+        }catch (Exception e){
+            if(session.getTransaction() !=null){
+                logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
+        return findSpittle;
+    }
 }

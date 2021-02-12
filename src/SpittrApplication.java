@@ -25,10 +25,10 @@ public class SpittrApplication {
         d1.createSpitter(s2);
         d1.createSpitter(s3);
         d1.createSpitter(s4);
-        d1.displaySpitters();
-        d1.deleteSpitter(2L);
+        SpitterDao.displaySpitters();
+        d1.deleteSpitter(5L);
         d1.updateSpitter(4L);
-        d1.displaySpitters();
+        SpitterDao.displaySpitters();
 
 //        d1.openConnection();
 //        d1.createSpitter(s1);
