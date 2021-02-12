@@ -26,7 +26,7 @@ public class SpittrApplication {
         d1.createSpitter(s3);
         d1.createSpitter(s4);
         SpitterDao.displaySpitters();
-        d1.deleteSpitter(5L);
+        d1.deleteSpitter(9L);
         d1.updateSpitter(4L);
         SpitterDao.displaySpitters();
 
