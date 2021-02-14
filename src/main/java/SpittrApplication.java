@@ -1,12 +1,6 @@
 import dao.SpitterDao;
 import domain.Spitter;
 import domain.Spittle;
-import hibernate.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import javax.security.auth.login.Configuration;
-import java.util.List;
 
 public class SpittrApplication {
 
