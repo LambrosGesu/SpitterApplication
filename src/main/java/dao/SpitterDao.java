@@ -31,8 +31,8 @@ public class SpitterDao {
         }
     }
 
-    public static List display() {
-        List spittersList = new ArrayList<>();
+    public static List<Spitter> display() {
+        List<Spitter> spittersList = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();

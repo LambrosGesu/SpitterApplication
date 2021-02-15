@@ -23,13 +23,6 @@
                     <executable>C:\Program Files\Java\jdk1.8.0_281\bin\javac</executable>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <webXml>src\web\WEB-INF\web.xml</webXml>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
