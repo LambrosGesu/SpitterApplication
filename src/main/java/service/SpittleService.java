@@ -1,37 +1,27 @@
 package service;
 
+import dao.SpittleDao;
 import domain.Spittle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpittleService {
-    private List<Spittle> spittles = new ArrayList<Spittle>();
+    private SpittleDao spittleDao = new SpittleDao();
 
     public void createSpittle(Spittle spittle){
-        spittles.add(spittle);
+        spittleDao.create(spittle);
     }
 
     public void deleteSpittle(Spittle spittle){
-        if(spittle.getId() != null)
-            spittles.remove(spittle);
+        spittleDao.delete(spittle.getId());
     }
 
     public void updateSpittle(Spittle spittle){
-        for(Spittle s : spittles){
-            if(s.getId() == spittle.getId()){
-                s.setMessage(spittle.getMessage());
-                s.setDate(spittle.getDate());
-            }
-        }
+        spittleDao.update(spittle.getId());
     }
 
     public List<Spittle> getSpittles(){
-        if(spittles.isEmpty()){
-            return null;
-        }
-        else {
-            return spittles;
-        }
+        return spittleDao.display();
     }
 }

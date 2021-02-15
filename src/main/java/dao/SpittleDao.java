@@ -15,7 +15,7 @@ public class SpittleDao {
     public final static Logger logger = Logger.getLogger(SpitterDao.class);
 
 
-    public void createSpittle(Spittle spittle) throws Exception {
+    public void create(Spittle spittle) {
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -34,7 +34,7 @@ public class SpittleDao {
         }
     }
 
-    public static List displaySpitters() {
+    public static List display() {
         List spittlesList = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -55,7 +55,7 @@ public class SpittleDao {
         return spittlesList;
     }
 
-    public void updateSpittle(Long id) throws Exception {
+    public void update(Long id) {
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -76,7 +76,7 @@ public class SpittleDao {
         }
     }
 
-    public void deleteSpittle(Long id) throws Exception {
+    public void delete(Long id) {
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();

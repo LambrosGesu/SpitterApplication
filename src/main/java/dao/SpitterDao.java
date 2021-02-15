@@ -12,7 +12,7 @@ public class SpitterDao {
     static Session session;
     public final static Logger logger = Logger.getLogger(SpitterDao.class);
 
-    public void createSpitter(Spitter spitter) throws Exception{
+    public void create(Spitter spitter){
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -31,7 +31,7 @@ public class SpitterDao {
         }
     }
 
-    public static List displaySpitters() {
+    public static List display() {
         List spittersList = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -52,7 +52,7 @@ public class SpitterDao {
         return spittersList;
     }
 
-    public void updateSpitter(Long id) throws Exception {
+    public void update(Long id){
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -75,7 +75,7 @@ public class SpitterDao {
         }
     }
 
-    public void deleteSpitter(Long id) throws Exception {
+    public void delete(Long id) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -97,11 +97,11 @@ public class SpitterDao {
     }
 
     public static Spitter findSpitterById(Long id){
-        Spitter findSpitter = null;
+//        Spitter findSpitter = null;
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            findSpitter = (Spitter) session.load(Spitter.class, id);
+//            findSpitter = (Spitter) session.load(Spitter.class, id);
 
         }catch (Exception e){
             if(session.getTransaction() !=null){
@@ -110,6 +110,6 @@ public class SpitterDao {
             }
             e.printStackTrace();
         }
-        return findSpitter;
+        return (Spitter) session.load(Spitter.class, id);
     }
 }

@@ -1,46 +1,35 @@
 package service;
 
+import dao.SpitterDao;
 import domain.Spitter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpitterService {
-    private List<Spitter> spitters = new ArrayList<Spitter>();
-    private  Spitter spitter;
+    private SpitterDao spitterDao = new SpitterDao();
 
     public SpitterService() {
     }
 
     public void createSpitter(Spitter spitter){
-        spitters.add(spitter);
+        spitterDao.create(spitter);
     }
 
     public void deleteSpitter(Spitter spitter){
-        if(spitter.getId() != null)
-            spitters.remove(spitter);
+        spitterDao.delete(spitter.getId());
     }
 
     public void updateSpitter(Spitter spitter) {
-        for(Spitter s : spitters){
-            if(s.getId() == spitter.getId()){
-                s.setFirstname(spitter.getFirstname());
-                s.setLastname(spitter.getLastname());
-                s.setUsername(spitter.getUsername());
-                s.setPassword(spitter.getPassword());
-            }
-        }
+        spitterDao.update(spitter.getId());
     }
 
-    public List<Spitter> getSpitters(){
-        return spitters;
+    public List getSpitters(){
+        return spitterDao.display();
     }
 
     public Spitter findSpitter(Long id){
-        for(Spitter s : spitters){
-            if(s.getId() == id) return s;
-        }
-        return null;
+        return spitterDao.findSpitterById(id);
     }
 
 }
