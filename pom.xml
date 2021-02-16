@@ -7,6 +7,7 @@
     <packaging>war</packaging>
 
     <build>
+        <finalName>Spitter</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${basedir}/src/test/
         </testSourceDirectory>

@@ -24,7 +24,7 @@ public class SpitterService {
         spitterDao.update(spitter.getId());
     }
 
-    public List getSpitters(){
+    public List<Spitter> getSpitters(){
         return spitterDao.display();
     }
 

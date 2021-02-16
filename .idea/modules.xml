@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SpitterApplication.iml" filepath="$PROJECT_DIR$/SpitterApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spitter-application-starter.iml" filepath="$PROJECT_DIR$/spitter-application-starter.iml" />
     </modules>
   </component>
 </project>
