@@ -1,28 +1,16 @@
-<%@ page import="domain.Spitter" %>
-<%@ page import="java.util.*" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: lgeso
+  Date: 2/18/2021
+  Time: 1:00 AM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Hello world</title>
+    <title>Hello Eurodyn World</title>
 </head>
 <body>
-<h1>Hello World!</h1>
-<%--<%--%>
-<%--    List<Spitter> allSpitters = (List<Spitter>) request.getAttribute("list");--%>
-<%--%>--%>
-<%--<table>--%>
-<%--    <tr>--%>
-<%--        <th>First Name</th>--%>
-<%--        <th>Last Name</th>--%>
-<%--    </tr>--%>
-<%--        <% for(Spitter s : allSpitters) { %>--%>
-
-<%--            <tr>--%>
-<%--                <td> <%= s.getFirstname() %></td>--%>
-<%--                <td> <%= s.getLastname() %></td>--%>
-<%--            </tr>--%>
-
-<%--        <% } %>--%>
-</table>
+    <h1>Index New World</h1>
 </body>
 </html>

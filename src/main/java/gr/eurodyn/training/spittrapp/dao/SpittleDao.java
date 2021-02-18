@@ -1,12 +1,10 @@
-package dao;
+package gr.eurodyn.training.spittrapp.dao;
 
-import domain.Spitter;
-import domain.Spittle;
-import hibernate.HibernateUtil;
+import gr.eurodyn.training.spittrapp.domain.Spittle;
+import gr.eurodyn.training.spittrapp.hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.jboss.logging.Logger;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 

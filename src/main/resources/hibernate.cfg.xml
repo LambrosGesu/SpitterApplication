@@ -24,7 +24,7 @@
         <property name="hibernate.dbcp.maxIdle">10</property>
         <property name="hibernate.dbcp.minIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <mapping class="domain.Spitter"/>
-        <mapping class="domain.Spittle"/>
+        <mapping class="gr.eurodyn.training.spittrapp.domain.Spitter"/>
+        <mapping class="gr.eurodyn.training.spittrapp.domain.Spittle"/>
     </session-factory>
 </hibernate-configuration>

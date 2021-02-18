@@ -1,4 +1,4 @@
-<%@ page import="domain.Spitter" %>
+<%@ page import="gr.eurodyn.training.spittrapp.domain.Spitter" %>
 <%@ page import="java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

@@ -1,4 +1,4 @@
-package domain;
+package gr.eurodyn.training.spittrapp.domain;
 import javax.persistence.*;
 
 

@@ -1,11 +1,12 @@
-package service;
+package gr.eurodyn.training.spittrapp.service;
 
-import dao.SpittleDao;
-import domain.Spittle;
+import gr.eurodyn.training.spittrapp.dao.SpittleDao;
+import gr.eurodyn.training.spittrapp.domain.Spittle;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class SpittleService {
     private SpittleDao spittleDao = new SpittleDao();
 

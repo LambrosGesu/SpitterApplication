@@ -1,4 +1,4 @@
-package hibernate;
+package gr.eurodyn.training.spittrapp.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

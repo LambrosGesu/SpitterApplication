@@ -1,13 +1,15 @@
-package dao;
+package gr.eurodyn.training.spittrapp.dao;
 
-import domain.Spitter;
-import hibernate.HibernateUtil;
+import gr.eurodyn.training.spittrapp.domain.Spitter;
+import gr.eurodyn.training.spittrapp.hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.jboss.logging.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class SpitterDao {
     static Session session;
     public final static Logger logger = Logger.getLogger(SpitterDao.class);
